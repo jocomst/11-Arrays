@@ -88,12 +88,19 @@ const getInitials = function (accs) {
       .join('');
   });
 };
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((accum, cur) => accum + cur, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
 
 getInitials(accounts);
-console.log(account1.username);
-console.log(account2.username);
-console.log(account3.username);
-console.log(account4.username);
+calcDisplayBalance(account1.movements);
+// console.log(account1.username);
+// console.log(account2.username);
+// console.log(account3.username);
+// console.log(account4.username);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -238,5 +245,52 @@ const movementsDescriptions = movements.map(
 );
 
 console.log(movementsDescriptions);
+
+
+//filter methods
+const deposits = movements.filter(function (mov) {
+  return mov > 0;
+});
+
+console.log(deposits);
+
+const withdrawals = movements.filter(mov => mov < 0);
+
+console.log(withdrawals);
+
+
+// reduce : array to single value
+
+//first paramter in reduce callback is accumulated value
+const globalBalance = movements.reduce((accum, cur) => accum + cur, 0);
+// console.log(globalBalance);
+
+//maximum value of the array
+
+const maximumValue = movements.reduce((acc, cur) => {
+  if (acc >= cur) {
+    return acc;
+  } else {
+    return cur;
+  }
+}, movements[0]);
+
+// console.log(maximumValue);
+
+const averageHumanAge = function (dogArr) {
+  const humanAgeOfDogs = dogArr.map(age => (age <= 2 ? age * 2 : 16 + age * 4));
+  console.log(humanAgeOfDogs);
+  const adults = humanAgeOfDogs.filter(age => {
+    return age > 18;
+  });
+  console.log(adults);
+  const average = adults.reduce(
+    (acc, age, i, arr) => acc + age / arr.length,
+    0
+  );
+  return average;
+};
+console.log(averageHumanAge([5, 2, 4, 1, 15, 8, 3]));
+console.log(averageHumanAge([16, 6, 10, 5, 6, 1, 4]));
+
 */
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
