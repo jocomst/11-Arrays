@@ -294,3 +294,31 @@ console.log(averageHumanAge([5, 2, 4, 1, 15, 8, 3]));
 console.log(averageHumanAge([16, 6, 10, 5, 6, 1, 4]));
 
 */
+
+// pipeline
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * 1.1)
+  .reduce((accum, cur) => accum + cur, 0);
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes} EUR`;
+
+  const outcomes = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc - mov, 0);
+  labelSumOut.textContent = `${Math.abs(outcomes)} EUR`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => deposit * 0.012)
+    .filter(interest => interest >= 1)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumInterest.textContent = `${interest} EUR`;
+};
+
+calcDisplaySummary(account1.movements);
+console.log(totalDepositsUSD);
