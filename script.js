@@ -322,3 +322,20 @@ const calcDisplaySummary = function (movements) {
 
 calcDisplaySummary(account1.movements);
 console.log(totalDepositsUSD);
+
+// const averageHumanAge = function (dogArr) {
+//   const humanAgeOfDogs = dogArr
+//     .map(age => (age <= 2 ? age * 2 : 16 + age * 4))
+//     .filter(age => age > 18)
+//     .reduce((acc, age, i, arr) => acc + age / arr.length, 0);
+//   return humanAgeOfDogs;
+// };
+
+// console.log(averageHumanAge([5, 2, 4, 1, 15, 8, 3]));
+// console.log(averageHumanAge([16, 6, 10, 5, 1, 6, 4]));
+
+const firstWithdrawal = movements.find(mov => mov < 0);
+
+//find only returns the first element found in the array it is called on
+const accountz = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(accountz);
