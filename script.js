@@ -61,9 +61,14 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (account) {
+const displayMovements = function (account, sort = false) {
   containerMovements.innerHTML = '';
-  account.movements.forEach(function (mov, i) {
+
+  //sorting
+  const movs = sort
+    ? account.movements.slice().sort((a, b) => a - b)
+    : account.movements;
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">
@@ -169,6 +174,18 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount / 10)) {
+    // add movement
+    currentAccount.movements.push(amount);
+    //update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -189,6 +206,13 @@ btnClose.addEventListener('click', function (e) {
   }
   inputClosePin.value = inputCloseUsername.value = '';
 });
+let isSorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount, !isSorted);
+  isSorted = !isSorted;
+});
+
 // console.log(account1.username);
 // console.log(account2.username);
 // console.log(account3.username);
@@ -385,7 +409,7 @@ const averageHumanAge = function (dogArr) {
 console.log(averageHumanAge([5, 2, 4, 1, 15, 8, 3]));
 console.log(averageHumanAge([16, 6, 10, 5, 6, 1, 4]));
 
-*/
+
 
 // pipeline
 
@@ -405,3 +429,57 @@ const firstWithdrawal = movements.find(mov => mov < 0);
 //find only returns the first element found in the array it is called on
 const accountz = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(accountz);
+
+
+
+// some
+
+console.log(movements.includes(-130));
+console.log(movements.some(mov => mov > 5000));
+
+// every only return true if all the elements in an array pass the test
+//can seperate callback into seperate variable
+const deposit = mov => mov > 0;
+
+console.log(account4.movements.every(deposit));
+
+
+//flat and flat map
+
+const nestedArr = [[1, 2, 3], [4, 5, 6], 7, 8];
+
+console.log(nestedArr.flat());
+
+//flat only goes one level deep, parameter should be how many levels deep you want
+
+const doubleNested = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+console.log(doubleNested.flat(2));
+
+const overallBalance = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((accum, cur) => accum + cur);
+
+console.log(overallBalance);
+
+//flatmap
+
+const overallBalance2 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((accum, cur) => accum + cur);
+
+console.log(overallBalance2);
+
+*/
+
+// sorting
+//sort method mutates og array
+const owners = ['Jonas', 'Zack', 'Adam', 'Martha'];
+console.log(owners.sort());
+
+//return something less than 0, a is before b,
+// greater than 0 b then a
+movements.sort((a, b) => a - b);
+console.log(movements);
+movements.sort((a, b) => b - a);
+console.log(movements);
