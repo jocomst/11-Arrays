@@ -589,7 +589,7 @@ const dogs = [
 ];
 
 dogs.forEach(dog => {
-  dog.recommendedFood = dog.weight ** 0.75 * 28;
+  dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28);
 });
 
 console.log(dogs);
@@ -597,10 +597,25 @@ console.log(dogs);
 const findOwnerDog = function (owner, dogArr) {
   const sarahDog = dogArr.find(dog => dog.owners.includes('Sarah'));
   console.log(sarahDog);
-
-  const eatTooMuch =
-    sarahDog.curFood >= sarahDog.recommendedFood ||
-    sarahDog.curFood <= sarahDog.recommendedFood;
 };
 
 findOwnerDog('Sarah', dogs);
+
+const ownersEatTooMuch = dogs
+  .filter(dogs => dogs.curFood > dogs.recommendedFood)
+  .flatMap(dog => dog.owners);
+
+const ownersEatTooLittle = dogs
+  .filter(dogs => dogs.curFood < dogs.recommendedFood)
+  .flatMap(dog => dog.owners);
+
+console.log(ownersEatTooMuch, ownersEatTooLittle);
+
+console.log(ownersEatTooLittle.join(', ') + ` dogs eat too little`);
+
+console.log(dogs.some(dog => dog.curFood === dog.recommendedFood));
+
+const sortedDogs = dogs
+  .slice()
+  .sort((a, b) => a.recommendedFood - b.recommendedFood);
+console.log(sortedDogs);
